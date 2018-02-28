@@ -1,0 +1,26 @@
+{
+    "name": "angular-seed",
+    "description": "A starter project for AngularJS",
+    "version": "0.0.0",
+    "homepage": "https://github.com/angular/angular-seed",
+    "license": "MIT",
+    "private": true,
+    "dependencies": {
+        "angular": "~1.6.9",
+        "angular-route": "~1.6.9",
+        "angular-loader": "~1.6.9",
+        "angular-mocks": "~1.6.9",
+        "angular-sanitize": "~1.6.9",
+        "html5-boilerplate": "^5.3.0",
+        "roslib": "*",
+        "eventemitter2": "*",
+        "jQuery": "*",
+        "jsoneditor": "*",
+        "ng-jsoneditor": "*",
+        "angular-schema-form": "*",
+        "angular-schema-form-bootstrap": "*",
+        "tv4": "*",
+        "object-path": "*",
+        "bootstrap": "4.0.0"
+    }
+}

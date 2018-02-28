@@ -1,0 +1,20 @@
+.dataview {
+    position: absolute;
+    background: red;
+    top: 50px;
+    right: 50px;
+    width: 400px;
+    box-sizing: border-box;
+    padding: 10px;
+    min-height: 200px;
+}
+
+.dataview .form-group label {
+    display: inline-block;
+    width: 30%;
+}
+
+.dataview .form-control {
+    display: inline-block;
+    width: 250px;
+}
