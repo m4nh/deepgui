@@ -13,11 +13,11 @@ angular
     ])
 
     .controller('View2Ctrl', [
-      "$scope", "$interval", "$q", 'RosProxy', 'Conv2D',
+      "$scope", "$rootScope", "$interval", "$q", 'RosProxy', 'Conv2D',
       'TypedConnectionPolicy', 'ModelsFactory',
       function(
-          $scope, $interval, $q, RosProxy, Conv2D, TypedConnectionPolicy,
-          ModelsFactory) {
+          $scope, $rootScope, $interval, $q, RosProxy, Conv2D,
+          TypedConnectionPolicy, ModelsFactory) {
 
         console.log("VIEW2 CREATED!", ModelsFactory.generateID());
 
@@ -26,8 +26,10 @@ angular
         $scope.current_sfm = RosProxy.getSelectedSFM();
 
         var onSelectionChanged = function(event, target) {
-          console.log(target);
-
+          if (target.figure)
+            console.log("SELECTD", target.figure.getChildren());
+          $rootScope.$broadcast(
+              "canvasEvents.shapeSelected", {figure: target.figure});
 
         };
 
@@ -39,7 +41,7 @@ angular
         canvas.on("select", $.proxy(onSelectionChanged, this));
 
         // Connection Policy
-        canvas.installEditPolicy(new TypedConnectionPolicy());
+        canvas.installEditPolicy(new StrongConnectionPolicy());
 
         // Grid Controls
         canvas.setScrollArea("#gfx_holder");
@@ -61,6 +63,12 @@ angular
 
         canvas.add(new LayerShape(ModelsFactory.generateModelType('Conv2D', {
           "name": "layer_x1"
+        })));
+        canvas.add(new LayerShape(ModelsFactory.generateModelType('Conv2D', {
+          "name": "layer_x2"
+        })));
+        canvas.add(new LayerShape(ModelsFactory.generateModelType('Conv2D', {
+          "name": "layer_x2"
         })));
         canvas.add(new LayerShape(ModelsFactory.generateModelType('Conv2D', {
           "name": "layer_x2"
@@ -87,7 +95,7 @@ angular
                     var stored = ModelsFactory.getStoredModel(userData.id);
                     if (stored) {
                       console.log("THERE IS A COPY!");
-                      figure.setUserData(stored);
+                      if (figure.setModel) figure.setModel(stored);
                     }
                   }
                 });
@@ -117,5 +125,15 @@ angular
         $scope.$on("$destroy", function(event) {
           $interval.cancel($scope.updateTimer);
         });
+
+
+        $scope.$on("modelEvents.genericUpdate", function(event, data) {
+          console.log("MODEL EVENT", event, data);
+          var figures = canvas.getFigures().data;
+          $.each(figures, function(i, v) {
+            if (v.update) v.update();
+          });
+        });
+
       }
     ]);

@@ -10,21 +10,24 @@ var LayerShape = draw2d.SetFigure.extend({
 
     // UserData
     if (model) {
-      this.setUserData(model);
+      this.setModel(model);
       // model.setGraphObject(this);
 
+      var handle = this;
 
-      // CFG
-      this._cfg = model.getGraphConfiguration();
 
       // Title
-      this.title = new draw2d.shape.basic.Label(
-          {text: this._cfg.title, stroke: 0, fontColor: "#0d0d0d"});
-      this.add(this.title, new draw2d.layout.locator.FloatingLocator(50, 10));
+      var title = new draw2d.shape.basic.Label({
+        text: this._model.getGraphConfiguration().title,
+        stroke: 0,
+        fontColor: "#0d0d0d",
+        userData: {"name": "@title"}
+      });
+      this.add(title, this.getTitleLocator());
 
       // Ports
-      var handle = this;
-      $.each(this._cfg.ports, function(i, port_data) {
+
+      $.each(model.getGraphConfiguration().ports, function(i, port_data) {
         port_type = port_data.type == 'input' ? ConnectorType.INPUT :
                                                 ConnectorType.OUTPUT;
         var port = new GeneralConnector(
@@ -47,7 +50,8 @@ var LayerShape = draw2d.SetFigure.extend({
     // setTimeout(function() {
     //   p_out_1.destroy();
     //   new GeneralConnector(
-    //       handle, ConnectorType.OUTPUT, null, "number", max_connections =
+    //       handle, ConnectorType.OUTPUT, null, "number",
+    //       max_connections =
     //       10);
 
     // }, 3000);
@@ -59,7 +63,41 @@ var LayerShape = draw2d.SetFigure.extend({
     this.persistPorts = true;
   },
 
+  setModel: function(model) {
+    this._model = model;
+    this.setUserData(model);
+  },
 
+  update: function() {
+
+    var handle = this;
+    $.each(this.getChildren().data, function(i, figure) {
+      console.log("HOOK", figure);
+      if (figure && figure.getUserData()) {
+        if (figure.getUserData().name &&
+            figure.getUserData().name.indexOf('@') != -1) {
+          var name = figure.getUserData().name.replace("@", "");
+
+          if (name == "title") {
+            figure.text = handle._model.getGraphConfiguration().title;
+            handle.remove(figure);
+            handle.add(figure, handle.getTitleLocator());
+          }
+          console.log("CHILDREND", figure, name);
+        }
+      }
+
+    });
+    // this.title.text = this._model.getGraphConfiguration().title;
+    // this.title.repaint();
+    // this.remove(this.title);
+    // this.add(this.title, this.getTitleLocator());
+    this.repaint();
+  },
+
+  getTitleLocator: function() {
+    return new draw2d.layout.locator.FloatingLocator(50, 10);
+  },
 
   createSet: function() {
     this.canvas.paper.setStart();

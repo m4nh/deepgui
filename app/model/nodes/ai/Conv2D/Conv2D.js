@@ -55,10 +55,7 @@ angular
           /*
            *
            */
-          setGraphObject(obj) {
-            this._graph_object = obj;
-            console.log("PERSISTENT", obj.getPersistentAttributes());
-          }
+          setGraphObject(obj) { this._graph_object = obj; }
           getGraphObject() { return this._graph_object; }
 
           /*
