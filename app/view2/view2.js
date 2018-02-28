@@ -27,9 +27,9 @@ angular
 
         var onSelectionChanged = function(event, target) {
           if (target.figure)
-            console.log("SELECTD", target.figure.getChildren());
-          $rootScope.$broadcast(
-              "canvasEvents.shapeSelected", {figure: target.figure});
+            // console.log("SELECTD", target.figure.getChildren());
+            $rootScope.$broadcast(
+                "canvasEvents.shapeSelected", {figure: target.figure});
 
         };
 

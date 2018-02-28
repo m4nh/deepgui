@@ -21,6 +21,9 @@
         "angular-schema-form-bootstrap": "*",
         "tv4": "*",
         "object-path": "*",
-        "bootstrap": "4.0.0"
+        "bootstrap": "4.0.0",
+        "angular-schema-form-colorpicker": "*",
+        "spectrum": "*",
+        "angular-spectrum-colorpicker": "*"
     }
 }

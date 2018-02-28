@@ -12,8 +12,11 @@ angular.module('dataview', []).directive('dataview', [
           $scope.model = model;
           if (model) {
             $scope.model_schema = $scope.model.getSchema();
+            $scope.layout_schema = $scope.model.getLayoutSchema()[0];
+            $scope.layout_form = $scope.model.getLayoutSchema()[1];
           } else {
             $scope.model_schema = null;
+            $scope.layout_schema = null;
           }
         };
 

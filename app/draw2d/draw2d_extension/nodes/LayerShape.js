@@ -1,4 +1,4 @@
-var LayerShape = draw2d.SetFigure.extend({
+var LayerShape = draw2d.shape.basic.Rectangle.extend({
 
   NAME: "LayerShape",
 
@@ -8,20 +8,28 @@ var LayerShape = draw2d.SetFigure.extend({
         setter, getter);
     var port;
 
+
+
     // UserData
     if (model) {
       this.setModel(model);
-      // model.setGraphObject(this);
 
+      // Layout
+      this.setLayoutByModel(model);
+
+      // Handle
       var handle = this;
 
-
       // Title
+      // Creates N childs with this technique: important part is to user
+      // "userData" as hook to
+      // get the related child during update procedure in "update()" function
       var title = new draw2d.shape.basic.Label({
-        text: this._model.getGraphConfiguration().title,
+        text: this._model.toStringLong(),
         stroke: 0,
-        fontColor: "#0d0d0d",
-        userData: {"name": "@title"}
+        fontColor: "#000000",
+        userData: {"name": "@title"},
+        cssClass: "centered-label"
       });
       this.add(title, this.getTitleLocator());
 
@@ -39,27 +47,7 @@ var LayerShape = draw2d.SetFigure.extend({
       console.log("LOADING FROM DATABSE", this);
     }
 
-
-    // var p1 = new GeneralConnector(this, ConnectorType.INPUT, null);
-
-    // var p_out_1 = new GeneralConnector(
-    //     this, ConnectorType.OUTPUT, null, "number", max_connections =
-    //     10);
-
-    // var handle = this;
-    // setTimeout(function() {
-    //   p_out_1.destroy();
-    //   new GeneralConnector(
-    //       handle, ConnectorType.OUTPUT, null, "number",
-    //       max_connections =
-    //       10);
-
-    // }, 3000);
-    // // LABEL
-    // var label = null;
-
-
-
+    // Persistence
     this.persistPorts = true;
   },
 
@@ -68,22 +56,26 @@ var LayerShape = draw2d.SetFigure.extend({
     this.setUserData(model);
   },
 
+  setLayoutByModel: function(model) { this.setBackgroundColor(model.bgcolor); },
+
   update: function() {
+    console.log("MODEL -> UPDATING", this.getUserData());
+
+    this.setLayoutByModel(this.getUserData());
 
     var handle = this;
     $.each(this.getChildren().data, function(i, figure) {
-      console.log("HOOK", figure);
+
       if (figure && figure.getUserData()) {
         if (figure.getUserData().name &&
             figure.getUserData().name.indexOf('@') != -1) {
           var name = figure.getUserData().name.replace("@", "");
 
           if (name == "title") {
-            figure.text = handle._model.getGraphConfiguration().title;
+            figure.text = handle.getUserData().toStringLong();
             handle.remove(figure);
             handle.add(figure, handle.getTitleLocator());
           }
-          console.log("CHILDREND", figure, name);
         }
       }
 
@@ -96,25 +88,25 @@ var LayerShape = draw2d.SetFigure.extend({
   },
 
   getTitleLocator: function() {
-    return new draw2d.layout.locator.FloatingLocator(50, 10);
+    return new draw2d.layout.locator.FloatingLocator(50, 50);
   },
 
-  createSet: function() {
-    this.canvas.paper.setStart();
+  // createSet: function() {
+  //   this.canvas.paper.setStart();
 
-    // Rectangle
-    this._shape = this.canvas.paper.path('M0 0L150 0L150 150L0 150Z');
-    this._shape.attr({
-      "stroke": "#D6D13E",
-      "stroke-width": 1,
-      "fill": "#CDFF45",
-      "dasharray": null,
-      "opacity": 1
-    });
-    this._shape.data("name", "Rectangle");
+  //   // Rectangle
+  //   this._shape = this.canvas.paper.path('M0 0L150 0L150 150L0 150Z');
+  //   this._shape.attr({
+  //     "stroke": "#D6D13E",
+  //     "stroke-width": 1,
+  //     "fill": "#CDFF45",
+  //     "dasharray": null,
+  //     "opacity": 1
+  //   });
+  //   this._shape.data("name", "Rectangle");
 
-    return this.canvas.paper.setFinish();
-  },
+  //   return this.canvas.paper.setFinish();
+  // },
 
   applyAlpha: function() {},
 

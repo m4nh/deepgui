@@ -28278,7 +28278,7 @@ draw2d.shape.basic.Label= draw2d.SetFigure.extend({
         this.fontSize = 12;
         this.fontColor = new draw2d.util.Color("#080808");
         this.fontFamily = null;
-        this.padding = {top:4, right:4, bottom:4,left:4};
+        this.padding = {top:0, right:0, bottom:0,left:0};
         
         this.outlineStroke = 0;
         this.outlineColor = new draw2d.util.Color(null);
@@ -28396,7 +28396,7 @@ draw2d.shape.basic.Label= draw2d.SetFigure.extend({
      */
     calculateTextAttr: function()
     {
-        var lattr={"text-anchor":"start",
+        var lattr={"text-anchor":"middle",
                    "font-size":this.fontSize,
                    "font-weight":(this.bold===true)?"bold":"normal",
                    fill: this.fontColor.hash(),
@@ -28419,10 +28419,10 @@ draw2d.shape.basic.Label= draw2d.SetFigure.extend({
             this.shape.transform(ts);
             this.lastAppliedLabelRotation = ts;
     //    }
-        
+        var x = this.getAbsoluteX()+this.getWidth()*0.5;
         this.svgNodes.transform(
                 "R" + this.rotationAngle+
-                "T" + this.getAbsoluteX() + "," + this.getAbsoluteY());
+                "T" + x + "," + this.getAbsoluteY());
         
         return this;
     },
