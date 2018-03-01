@@ -31,8 +31,7 @@ angular
         var createConnection = function(sourcePort, targetPort) {
           console.log("SDADJOASJD IOASJD OIASJD IOASJDO IAJS DOIAJSIODAS ");
           var conn = new draw2d.Connection({
-            router: new draw2d.layout.connection
-                        .InteractiveManhattanConnectionRouter(),
+            router: new draw2d.layout.connection.ManhattanConnectionRouter(),
             outlineStroke: 0,
             outlineColor: "#303030",
             stroke: 10,
@@ -54,10 +53,9 @@ angular
 
 
         var onSelectionChanged = function(event, target) {
-          if (target.figure)
-            // console.log("SELECTD", target.figure.getChildren());
-            $rootScope.$broadcast(
-                "canvasEvents.shapeSelected", {figure: target.figure});
+          // console.log("SELECTD", target.figure.getChildren());
+          $rootScope.$broadcast(
+              "canvasEvents.shapeSelected", {figure: target.figure});
 
         };
 
@@ -70,7 +68,7 @@ angular
         canvas.on("select", $.proxy(onSelectionChanged, this));
 
         // Connection Policy
-        canvas.installEditPolicy(new StrongConnectionPolicy());
+        canvas.installEditPolicy(new TypedConnectionPolicy());
 
         // Grid Controls
         canvas.setScrollArea("#gfx_holder");
@@ -83,9 +81,9 @@ angular
             new draw2d.policy.canvas.SnapToCenterEditPolicy());
 
         // Connections
-        canvas.installEditPolicy(
-            new draw2d.policy.connection.DragConnectionCreatePolicy(
-                {createConnection: createConnection}));
+        // canvas.installEditPolicy(
+        //     new draw2d.policy.connection.DragConnectionCreatePolicy(
+        //         {createConnection: createConnection}));
 
 
         var d2 = new TestShape({width: 150, height: 160, x: 100, y: 300});

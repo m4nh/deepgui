@@ -4,12 +4,12 @@ angular
     .module('model.nodes.ai.Conv2D', [])
 
     .factory('Conv2D', [
-      'BaseNode',
-      function(BaseNode) {
+      'BaseNode', 'ColorsService',
+      function(BaseNode, ColorsService) {
 
         class Conv2D extends BaseNode {
           constructor(id, data) {
-            super(id, {bgcolor: "#aa33aa"});
+            super(id, {bgcolor: ColorsService.getColor("blue")});
             data = data || {}
             this.name = data.name || "Unnamed";
             this.padding = data.padding || "same";
@@ -54,16 +54,16 @@ angular
             }
           }
 
+          getName() { return this.name; }
           /*
            *
            */
           toString() { return 'Conv2D (' + this.name + ')'; }
           toStringLong() {
             var s = "";
-            if (this.name.length > 0) s += "<" + this.name + ">\n";
             s += "Conv2D\n";
-            s += this.size + " [" + this.kernel_size + "]\n";
-            s += this.stride + "," + this.stride;
+            s += this.size + " x [" + this.kernel_size + "]\n";
+            s += "Stride(" + this.stride + "," + this.stride + ")";
             return s;
           }
         }

@@ -10,7 +10,7 @@ angular
       // models
       'model.nodes.BaseNode', 'model.nodes.ai.Conv2D',
       // services
-      'services.mfactory.ModelsFactory'
+      'services.utils.ColorsService', 'services.mfactory.ModelsFactory'
     ])
     .config([
       '$locationProvider', '$routeProvider',
@@ -18,5 +18,7 @@ angular
         $locationProvider.hashPrefix('!');
 
         $routeProvider.otherwise({redirectTo: '/view1'});
+
+
       }
     ]);

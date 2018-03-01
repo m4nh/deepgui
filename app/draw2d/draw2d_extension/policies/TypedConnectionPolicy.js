@@ -293,8 +293,22 @@ angular
 
               createConnection: function() {
                 var connection = this._super();
+
+                // var conn = new draw2d.Connection({
+                //   router:
+                //       new
+                //       draw2d.layout.connection.ManhattanConnectionRouter(),
+                //   outlineStroke: 0,
+                //   outlineColor: "#303030",
+                //   stroke: 10,
+                //   color: "#00a8f0",
+                //   radius: 20,
+                //   source: sourcePort,
+                //   target: targetPort
+                // });
+                connection.setStroke(10);
                 connection.setRouter(
-                    new draw2d.layout.connection.DirectRouter());
+                    new draw2d.layout.connection.ManhattanConnectionRouter());
                 console.log("CONNECTION CREATED", connection);
                 return connection;
               }

@@ -1,3 +1,19 @@
+/*
+ * UTILS
+ */
+draw2d.utils = {
+  hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } :
+                    null;
+  }
+};
+
+
 var LayerShape = draw2d.shape.basic.Rectangle.extend({
 
   NAME: "LayerShape",
@@ -23,16 +39,13 @@ var LayerShape = draw2d.shape.basic.Rectangle.extend({
       // Title
       // Creates N childs with this technique: important part is to user
       // "userData" as hook to
-      // get the related child during update procedure in "update()" function
-      var title = new draw2d.shape.basic.Label({
-        text: this._model.toStringLong(),
-        stroke: 0,
-        fontColor: "#000000",
-        userData: {"name": "@title"},
-        cssClass: "centered-label"
-      });
-      this.add(title, this.getTitleLocator());
+      // get the related child during update procedure in "update()"
+      // function
+      var title = this.createInnerLabel(
+          "title", "TITLE", 50, 50, "getUserData().toStringLong()");
 
+      this.createInnerLabel(
+          "name", "TITLE", 50, -10, "getUserData().getName()");
       // Ports
 
       $.each(model.getGraphConfiguration().ports, function(i, port_data) {
@@ -51,34 +64,90 @@ var LayerShape = draw2d.shape.basic.Rectangle.extend({
     this.persistPorts = true;
   },
 
+  createInnerLabel: function(name, text, x, y, cb) {
+    cb = cb !== undefined ? cb : 'fakeLabelContent()';
+    var title = new draw2d.shape.basic.Label({
+      text: text || "",
+      stroke: 0,
+      fontColor: "#000000",
+      fontFamily: "Verdana",
+      userData: {"label": "@" + name + "@" + x + "," + y + "@" + cb},
+      cssClass: "centered-label"
+    });
+    this.add(title, new draw2d.layout.locator.FloatingLocator(x, y));
+    return title;
+  },
+
+  getInnerLabel: function(figure) {
+    if (figure && figure.getUserData() && figure.getUserData().label) {
+      var chunks = figure.getUserData().label.split("@");
+      var coords = chunks[2].split(",");
+      return {
+        name: chunks[1], x: parseInt(coords[0]), y: parseInt(coords[1]),
+            cb: chunks[3]
+      }
+    }
+    return null;
+  },
+
+  fakeLabelContent: function() { return "FLable"; },
+
   setModel: function(model) {
     this._model = model;
     this.setUserData(model);
   },
 
-  setLayoutByModel: function(model) { this.setBackgroundColor(model.bgcolor); },
+  getChildrenByName: function(name) {
+    var found = null;
+    var handle = this;
+    $.each(this.getChildren().data, function(i, figure) {
+      var label = handle.getInnerLabel(figure);
+      if (label && label.name.indexOf(name) != -1) {
+        found = figure;
+        return;
+      }
+    });
+    return found;
+  },
+
+  setLayoutByModel: function(model) {
+
+    var title = this.getChildrenByName('title');
+    if (title) {
+      var lightness = jQuery.Color(model.bgcolor).lightness();
+      if (lightness > 0.5) {
+        title.setFontColor("#333333");
+      } else {
+        title.setFontColor("#eeeeee");
+      }
+    }
+
+    this.setBackgroundColor(model.bgcolor);
+
+    var handle = this;
+    $.each(this.getPorts().data, function(i, port) {
+      port.setBackgroundColor(model.bgcolor)
+    });
+
+  },
+
+
 
   update: function() {
-    console.log("MODEL -> UPDATING", this.getUserData());
 
     this.setLayoutByModel(this.getUserData());
 
     var handle = this;
     $.each(this.getChildren().data, function(i, figure) {
-
-      if (figure && figure.getUserData()) {
-        if (figure.getUserData().name &&
-            figure.getUserData().name.indexOf('@') != -1) {
-          var name = figure.getUserData().name.replace("@", "");
-
-          if (name == "title") {
-            figure.text = handle.getUserData().toStringLong();
-            handle.remove(figure);
-            handle.add(figure, handle.getTitleLocator());
-          }
-        }
+      var label = handle.getInnerLabel(figure);
+      if (label) {
+        var text = eval("handle." + label.cb);
+        figure.text = text;
+        handle.remove(figure);
+        handle.add(
+            figure,
+            new draw2d.layout.locator.FloatingLocator(label.x, label.y));
       }
-
     });
     // this.title.text = this._model.getGraphConfiguration().title;
     // this.title.repaint();

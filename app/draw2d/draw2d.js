@@ -35502,10 +35502,10 @@ draw2d.Port = draw2d.shape.basic.Circle.extend({
         this.name = null;
 
         this._super($.extend({
-                bgColor: "#4f6870",
-                stroke:1,
-                diameter:draw2d.isTouchDevice?25:10,
-                color:"#1B1B1B",
+                bgColor: "#aaaaaa",
+                stroke:0,
+                diameter:draw2d.isTouchDevice?25:20,
+                color:"#C6FF00",
                 selectable:false
             },attr),
             setter,
@@ -35518,7 +35518,7 @@ draw2d.Port = draw2d.shape.basic.Circle.extend({
         this.oy = this.y;
         this.coronaWidth = 5; // the corona width for the hitTest method. Useful during drag&drop of ports. Better SnapTo behavior.
         this.corona = null; // draw2d.shape.basic.Circle
-        this.useGradient = true;
+        this.useGradient = false;
         
         this.preferredConnectionDirection = null;
         
@@ -53399,3 +53399,5 @@ Math.sign = function()
  if (this < 0) {return -1;}
  return 1;
 };
+
+

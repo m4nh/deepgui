@@ -28,10 +28,11 @@
     text-align: center;
 }
 
+.centered-label {
+    /* mix-blend-mode: color; */
+}
 
-/* .centered-label {
-    text-anchor: middle !important;
-} */
+.draw2d_InputPort {}
 
 
 /**

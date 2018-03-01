@@ -26,6 +26,7 @@ class GeneralConnector {
       }
     }
 
+
     // Max connections
     this._port.setMaxFanOut(this._max_connections);
     this._port.setName(this._name);

@@ -261,7 +261,28 @@ var StrongConnectionPolicy =
 
       createConnection: function() {
         var connection = this._super();
-        connection.setRouter(new draw2d.layout.connection.DirectRouter());
+
+        // var conn = new draw2d.Connection({
+        //   router: new draw2d.layout.connection.ManhattanConnectionRouter(),
+        //   outlineStroke: 0,
+        //   outlineColor: "#303030",
+        //   stroke: 10,
+        //   color: "#00a8f0",
+        //   radius: 20,
+        //   source: sourcePort,
+        //   target: targetPort
+        // });
+        // // since version 3.5.6
+        // //
+        // conn.on("dragEnter", function(emitter, event) {
+        //   conn.attr({outlineColor: "#30ff30"});
+        // });
+        // conn.on("dragLeave", function(emitter, event) {
+        //   conn.attr({outlineColor: "#303030"});
+        // });
+
+        connection.setRouter(
+            new draw2d.layout.connection.ManhattanConnectionRouter());
         console.log("CONNECTION CREATED", connection);
         return connection;
       }

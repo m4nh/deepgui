@@ -1,6 +1,7 @@
 'use strict';
 angular.module('dataview', []).directive('dataview', [
-  function() {
+  'ColorsService',
+  function(ColorsService) {
     return {
       restrict: 'E',
       transclude: true,
@@ -8,9 +9,11 @@ angular.module('dataview', []).directive('dataview', [
       // CONTROLLER
       controller: function($scope, $element, Conv2D) {
 
+        console.log(ColorsService.getColor("red", "900"));
+
         $scope.initModel = function(model) {
           $scope.model = model;
-          if (model) {
+          if (model && model.getSchema) {
             $scope.model_schema = $scope.model.getSchema();
             $scope.layout_schema = $scope.model.getLayoutSchema()[0];
             $scope.layout_form = $scope.model.getLayoutSchema()[1];
