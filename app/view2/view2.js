@@ -25,6 +25,34 @@ angular
 
         $scope.current_sfm = RosProxy.getSelectedSFM();
 
+        /*
+         * CREATES CONNECTION OVERLOAD
+         */
+        var createConnection = function(sourcePort, targetPort) {
+          console.log("SDADJOASJD IOASJD OIASJD IOASJDO IAJS DOIAJSIODAS ");
+          var conn = new draw2d.Connection({
+            router: new draw2d.layout.connection
+                        .InteractiveManhattanConnectionRouter(),
+            outlineStroke: 0,
+            outlineColor: "#303030",
+            stroke: 10,
+            color: "#00a8f0",
+            radius: 20,
+            source: sourcePort,
+            target: targetPort
+          });
+          // since version 3.5.6
+          //
+          conn.on("dragEnter", function(emitter, event) {
+            conn.attr({outlineColor: "#30ff30"});
+          });
+          conn.on("dragLeave", function(emitter, event) {
+            conn.attr({outlineColor: "#303030"});
+          });
+          return conn;
+        };
+
+
         var onSelectionChanged = function(event, target) {
           if (target.figure)
             // console.log("SELECTD", target.figure.getChildren());
@@ -36,6 +64,7 @@ angular
 
 
         var canvas = new draw2d.Canvas("gfx_holder");
+
 
         // Seelction
         canvas.on("select", $.proxy(onSelectionChanged, this));
@@ -52,6 +81,11 @@ angular
             new draw2d.policy.canvas.SnapToInBetweenEditPolicy());
         canvas.installEditPolicy(
             new draw2d.policy.canvas.SnapToCenterEditPolicy());
+
+        // Connections
+        canvas.installEditPolicy(
+            new draw2d.policy.connection.DragConnectionCreatePolicy(
+                {createConnection: createConnection}));
 
 
         var d2 = new TestShape({width: 150, height: 160, x: 100, y: 300});
