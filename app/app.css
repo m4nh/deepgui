@@ -1,5 +1,9 @@
 /* app css stylesheet */
 
+body {
+    font-family: Roboto-light;
+}
+
 .menu {
     list-style: none;
     border-bottom: 0.1em solid black;
@@ -45,4 +49,30 @@
     height: 500px;
     box-shadow: 0px 0px 5px #aaa;
     overflow: auto;
+}
+
+
+/* COLOR SPECTRUM */
+
+.sp-replacer {
+    border: none;
+    background: #cfd8dc;
+    padding: 4px 4px 4px 1px;
+}
+
+.sp-replacer .sp-preview {
+    border: none;
+}
+
+.sp-replacer .sp-dd {
+    display: none;
+}
+
+.sp-container {
+    border: none;
+    background-color: #eceff1;
+}
+
+.sp-palette .sp-thumb-el {
+    border: none;
 }

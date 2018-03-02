@@ -261,6 +261,7 @@ angular
                           draw2d.command.CommandType.CONNECT);
                       request.source = this.currentDropTarget;
                       request.target = this.mouseDraggingElement;
+
                       var command =
                           this.mouseDraggingElement.createCommand(request);
 
@@ -306,7 +307,8 @@ angular
                 //   source: sourcePort,
                 //   target: targetPort
                 // });
-                connection.setStroke(10);
+                connection.setColor("#9E9E9E");
+                connection.setStroke(5);
                 connection.setRouter(
                     new draw2d.layout.connection.ManhattanConnectionRouter());
                 console.log("CONNECTION CREATED", connection);

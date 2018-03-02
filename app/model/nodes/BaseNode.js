@@ -24,7 +24,10 @@ angular
             return [
               {
                 type: "object",
-                properties: {bgcolor: {"type": "string", "format": "color"}}
+                properties: {
+                  bgcolor:
+                      {"type": "string", title: "Color", "format": "color"}
+                }
               },
               [{
                 key: "bgcolor",
@@ -50,6 +53,7 @@ angular
           /*
            *
            */
+          toStringType() { return 'BaseNode'; }
           toString() { return 'BaseNode'; }
           toStringLong() { return 'BaseNode'; }
         }

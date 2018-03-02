@@ -8,7 +8,8 @@ angular
       // draw2d
       'draw2d.policies.TypedConnectionPolicy',
       // models
-      'model.nodes.BaseNode', 'model.nodes.ai.Conv2D',
+      'model.nodes.BaseNode', 'model.nodes.ai.Conv2DNode',
+      'model.nodes.ai.ConcatenateNode',
       // services
       'services.utils.ColorsService', 'services.mfactory.ModelsFactory'
     ])

@@ -15,7 +15,6 @@ class GeneralConnector {
     // Port Direction
     if (type == ConnectorType.INPUT) {
       this._port = draw2d.Configuration.factory.createInputPort(node);
-      this._max_connections = 1;
       if (this._name == null) {
         this._name = "Port_" + type + "_" + node.inputPorts.getSize();
       }

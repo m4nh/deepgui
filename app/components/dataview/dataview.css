@@ -1,20 +1,60 @@
+:root {
+    --main-bg-color: #cfd8dc;
+    --main-border-color: #b0bec5;
+}
+
 .dataview {
     position: absolute;
-    background: red;
+    background: var(--main-bg-color);
     top: 50px;
     right: 50px;
-    width: 400px;
+    width: 300px;
     box-sizing: border-box;
     padding: 10px;
     min-height: 200px;
+    border: 1px solid var(--main-border-color);
+    box-shadow: 0px 0px 1px var(--main-border-color);
+}
+
+.dataview h2 {
+    text-align: center;
+    font-family: Roboto-medium;
+    font-size: 25px;
+    margin: 0px;
+}
+
+.dataview .dataview-separator {
+    border-bottom: 1px solid var(--main-border-color);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.dataview .form-group {
+    margin-bottom: 0px;
 }
 
 .dataview .form-group label {
     display: inline-block;
-    width: 30%;
+    width: 38%;
+    text-align: right;
+    padding-right: 10px;
 }
 
 .dataview .form-control {
     display: inline-block;
-    width: 250px;
+    width: 60%;
+}
+
+.dataview input.form-control {
+    margin-left: -4px;
+}
+
+.dataview input.form-control,
+.dataview select.form-control {
+    height: 30px !important;
+    font-family: Roboto-thin;
+}
+
+.form-layout-options>bootstrap-decorator>div>div {
+    display: inline-block;
 }

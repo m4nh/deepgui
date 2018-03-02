@@ -1,13 +1,13 @@
 'use strict';
 angular
 
-    .module('model.nodes.ai.Conv2D', [])
+    .module('model.nodes.ai.Conv2DNode', [])
 
-    .factory('Conv2D', [
+    .factory('Conv2DNode', [
       'BaseNode', 'ColorsService',
       function(BaseNode, ColorsService) {
 
-        class Conv2D extends BaseNode {
+        class Conv2DNode extends BaseNode {
           constructor(id, data) {
             super(id, {bgcolor: ColorsService.getColor("blue")});
             data = data || {}
@@ -27,11 +27,14 @@ angular
 
               properties: {
                 name: {type: "string", title: "Name"},
-                size: {type: "number"},
-                kernel_size:
-                    {type: "string", enum: ['1x1', '3x3', '5x5', '7x7']},
-                padding: {type: "string", enum: ['same']},
-                stride: {type: "number"}
+                size: {type: "number", title: "Size"},
+                kernel_size: {
+                  type: "string",
+                  title: "Kernel Size",
+                  enum: ['1x1', '3x3', '5x5', '7x7']
+                },
+                padding: {type: "string", title: "Padding", enum: ['same']},
+                stride: {type: "number", title: "Stride"}
 
               }
             };
@@ -55,6 +58,8 @@ angular
           }
 
           getName() { return this.name; }
+
+          toStringType() { return 'Conv2D'; }
           /*
            *
            */
@@ -69,7 +74,7 @@ angular
         }
 
 
-        return Conv2D;
+        return Conv2DNode;
 
       }
     ]);

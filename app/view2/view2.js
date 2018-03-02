@@ -13,10 +13,10 @@ angular
     ])
 
     .controller('View2Ctrl', [
-      "$scope", "$rootScope", "$interval", "$q", 'RosProxy', 'Conv2D',
-      'TypedConnectionPolicy', 'ModelsFactory',
+      "$scope", "$rootScope", "$interval", "$q", 'RosProxy', 'Conv2DNode',
+      'ConcatenateNode', 'TypedConnectionPolicy', 'ModelsFactory',
       function(
-          $scope, $rootScope, $interval, $q, RosProxy, Conv2D,
+          $scope, $rootScope, $interval, $q, RosProxy, Conv2D, Concatenate,
           TypedConnectionPolicy, ModelsFactory) {
 
         console.log("VIEW2 CREATED!", ModelsFactory.generateID());
@@ -93,18 +93,22 @@ angular
         canvas.add(d2);
 
 
-        canvas.add(new LayerShape(ModelsFactory.generateModelType('Conv2D', {
-          "name": "layer_x1"
-        })));
-        canvas.add(new LayerShape(ModelsFactory.generateModelType('Conv2D', {
-          "name": "layer_x2"
-        })));
-        canvas.add(new LayerShape(ModelsFactory.generateModelType('Conv2D', {
-          "name": "layer_x2"
-        })));
-        canvas.add(new LayerShape(ModelsFactory.generateModelType('Conv2D', {
-          "name": "layer_x2"
-        })));
+        canvas.add(
+            new LayerShape(
+                ModelsFactory.generateModelType(
+                    'Conv2DNode', {"name": "layer_x1"})));
+        canvas.add(
+            new LayerShape(
+                ModelsFactory.generateModelType(
+                    'Conv2DNode', {"name": "layer_x2"})));
+        canvas.add(
+            new LayerShape(
+                ModelsFactory.generateModelType(
+                    'Conv2DNode', {"name": "layer_x2"})));
+        canvas.add(
+            new LayerShape(
+                ModelsFactory.generateModelType(
+                    'ConcatenateNode', {"name": "layer_x2"})));
 
         $scope.saveAndLoad = function() {
           var writer = new draw2d.io.json.Writer();
@@ -160,7 +164,6 @@ angular
 
 
         $scope.$on("modelEvents.genericUpdate", function(event, data) {
-          console.log("MODEL EVENT", event, data);
           var figures = canvas.getFigures().data;
           $.each(figures, function(i, v) {
             if (v.update) v.update();

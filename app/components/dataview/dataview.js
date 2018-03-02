@@ -7,7 +7,7 @@ angular.module('dataview', []).directive('dataview', [
       transclude: true,
       templateUrl: 'components/dataview/dataview.html',
       // CONTROLLER
-      controller: function($scope, $element, Conv2D) {
+      controller: function($scope, $element) {
 
         console.log(ColorsService.getColor("red", "900"));
 
@@ -36,7 +36,6 @@ angular.module('dataview', []).directive('dataview', [
             $scope.initModel(null);
           }
           $scope.$apply();
-          console.log("EVENT", event, target);
         });
       }
     };
