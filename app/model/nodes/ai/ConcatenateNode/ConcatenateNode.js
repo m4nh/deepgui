@@ -9,14 +9,19 @@ angular
 
         class ConcatenateNode extends BaseNode {
           constructor(id, data) {
-            super(id, {bgcolor: ColorsService.getColor("green")});
+            var super_data = data;
+            super_data.bgcolor = data.bgcolor != undefined ?
+                data.bgcolor :
+                ColorsService.getColor("green");
+
+            super(id, super_data);
             data = data || {}
             this.name = data.name || "Unnamed";
           }
 
-          /*
+          /**
            *
-           */
+          */
           getSchema() {
             var schema = {
               type: "object",
@@ -29,7 +34,7 @@ angular
             return schema;
           }
 
-          /*
+          /**
            *
            */
           getGraphConfiguration() {

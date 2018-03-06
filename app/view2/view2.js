@@ -13,16 +13,16 @@ angular
     ])
 
     .controller('View2Ctrl', [
-      "$scope", "$rootScope", "$interval", "$q", 'RosProxy', 'Conv2DNode',
-      'ConcatenateNode', 'TypedConnectionPolicy', 'ModelsFactory',
+      "$scope", "$timeout", "$rootScope", "$interval", "$q", 'RosProxy',
+      'Conv2DNode', 'ConcatenateNode', 'TypedConnectionPolicy', 'ModelsFactory',
+      'PersistenceService',
       function(
-          $scope, $rootScope, $interval, $q, RosProxy, Conv2D, Concatenate,
-          TypedConnectionPolicy, ModelsFactory) {
+          $scope, $timeout, $rootScope, $interval, $q, RosProxy, Conv2D,
+          Concatenate, TypedConnectionPolicy, ModelsFactory,
+          PersistenceService) {
 
         console.log("VIEW2 CREATED!", ModelsFactory.generateID());
-
-
-
+        PersistenceService.test();
         $scope.current_sfm = RosProxy.getSelectedSFM();
 
         /*
@@ -111,40 +111,77 @@ angular
                     'ConcatenateNode', {"name": "layer_x2"})));
 
         $scope.saveAndLoad = function() {
-          var writer = new draw2d.io.json.Writer();
-          writer.marshal(canvas, function(json) {
-            // convert the json object into string representation
-            var jsonTxt = JSON.stringify(json, null, 2);
-            // console.log(json);
+          PersistenceService.saveToJson(canvas).then(function(v) {
+            console.log("Saved", v);
+            PersistenceService.saveToFile(v, "proppo.json");
+            canvas.clear();
             setTimeout(function() {
-              canvas.clear();
-              setTimeout(function() {
-                // (load)
-                var reader = new draw2d.io.json.Reader();
-                reader.unmarshal(canvas, json);
-                var figures = canvas.getFigures().data;
-                console.log("RELAODED", canvas);
-                $.each(figures, function(i, figure) {
-                  console.log("RELOADING", figure);
-                  var userData = figure.getUserData();
-                  if (userData && userData.id) {
-                    var stored = ModelsFactory.getStoredModel(userData.id);
-                    if (stored) {
-                      console.log("THERE IS A COPY!");
-                      if (figure.setModel) figure.setModel(stored);
-                    }
-                  }
-                });
+              PersistenceService.loadFromJson(canvas, v);
+            }, 1000);
+          })
 
-                // writer.marshal(canvas, function(json) { console.log(json);
-                // });
-              }, 2000);
-            }, 2000);
-            // insert the json string into a DIV for preview or post
-            // it via ajax to the server....
 
-          });
+
+          // var writer = new draw2d.io.json.Writer();
+          // writer.marshal(canvas, function(json) {
+          //   // convert the json object into string representation
+          //   var jsonTxt = JSON.stringify(json, null, 2);
+          //   // console.log(json);
+          //   setTimeout(function() {
+          //     canvas.clear();
+          //     setTimeout(function() {
+          //       // (load)
+          //       var reader = new draw2d.io.json.Reader();
+          //       reader.unmarshal(canvas, json);
+          //       var figures = canvas.getFigures().data;
+          //       console.log("RELAODED", canvas);
+          //       $.each(figures, function(i, figure) {
+          //         console.log("RELOADING", figure);
+          //         var userData = figure.getUserData();
+          //         if (userData && userData.id) {
+          //           var stored = ModelsFactory.getStoredModel(userData.id);
+          //           if (stored) {
+          //             console.log("THERE IS A COPY!");
+          //             if (figure.setModel) figure.setModel(stored);
+          //           }
+          //         }
+          //       });
+
+          //       // writer.marshal(canvas, function(json) { console.log(json);
+          //       // });
+          //     }, 2000);
+          //   }, 2000);
+          //   // insert the json string into a DIV for preview or post
+          //   // it via ajax to the server....
+
+          // });
         };
+
+        $scope.loadFromFile = function() {
+          console.log($scope.loadedFile);
+
+
+        };
+
+
+        $timeout(function() {
+          // console.log();
+          var input = jQuery("input.inputfile");
+          input.on("change", function(event) {
+            var files = event.target.files;
+            var file = files[0];
+            console.log("CHANGE!", file);
+            var reader = new FileReader();
+            reader.readAsText(file, "UTF-8");
+            reader.onload = function(evt) {
+              var json = JSON.parse(evt.target.result);
+              canvas.clear();
+              PersistenceService.loadFromJson(canvas, json);
+              console.log("LOADED!", json);
+            };
+          })
+
+        }, 0);
 
 
         setTimeout(function() {

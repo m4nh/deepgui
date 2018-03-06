@@ -199,7 +199,6 @@ var TestShape = draw2d.SetFigure.extend({
         locator: e.locator.getPersistentAttributes()
       });
     });
-    console.log("STORING", memento);
     return memento;
   },
 
@@ -223,7 +222,6 @@ var TestShape = draw2d.SetFigure.extend({
     //
     $.each(memento.labels, $.proxy(function(i, json) {
       // create the figure stored in the JSON
-      console.log("RESTORING", json);
       var figure = eval("new " + json.figure.type + "()");
       figure.setPersistentAttributes(json.figure);
 

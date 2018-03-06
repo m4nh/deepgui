@@ -9,7 +9,13 @@ angular
 
         class Conv2DNode extends BaseNode {
           constructor(id, data) {
-            super(id, {bgcolor: ColorsService.getColor("blue")});
+            var super_data = data;
+            super_data.bgcolor = data.bgcolor != undefined ?
+                data.bgcolor :
+                ColorsService.getColor("blue");
+
+            //
+            super(id, super_data);
             data = data || {}
             this.name = data.name || "Unnamed";
             this.padding = data.padding || "same";

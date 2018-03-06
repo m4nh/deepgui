@@ -57,7 +57,7 @@ var LayerShape = draw2d.shape.basic.Rectangle.extend({
 
       });
     } else {
-      console.log("LOADING FROM DATABSE", this);
+      //
     }
 
     // Persistence

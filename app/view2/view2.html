@@ -1,4 +1,4 @@
-<h1>Graph</h1>
+<nodecollection></nodecollection>
 <div class="graph-container">
     <div onselectstart="javascript:/*IE8 hack*/return false" id="gfx_holder" style="position:relative; width:3000px; height:3000px;">
     </div>
@@ -7,4 +7,6 @@
 <dataview>
     ciao
 </dataview>
+<input class="inputfile" type="file" ng-model="loadedFile" fileread/>
+<button ng-click="loadFromFile()">Load</button>
 <button ng-click="saveAndLoad()">Testina!</button>
