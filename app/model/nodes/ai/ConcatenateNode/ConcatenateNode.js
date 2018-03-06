@@ -17,6 +17,7 @@ angular
             super(id, super_data);
             data = data || {}
             this.name = data.name || "Unnamed";
+            this._graph_node_ = true;
           }
 
           /**

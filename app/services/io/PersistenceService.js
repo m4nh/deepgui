@@ -14,25 +14,40 @@ angular
 
         handle.store = {};
 
+        /**
+         *
+         * @param {*} canvas
+         */
+        handle.saveToJson = function(canvas) {
+          var deferred = $q.defer();
+          handle.saveCanvasToJson(canvas).then(function(v) {
+            var data = {canvas: v};
+            deferred.resolve(data);
+          });
+          return deferred.promise;
+        };
 
         /**
          * Canvas marshal to Json
          * @param {*} canvas
          */
-        handle.saveToJson = function(canvas) {
+        handle.saveCanvasToJson = function(canvas) {
           var deferred = $q.defer();
           handle._writer.marshal(
               canvas, function(json) { deferred.resolve(json); });
           return deferred.promise;
         };
 
+
+
         /**
          * Canvas unmarshal from json
          * @param {*} canvas
          * @param {*} json
          */
-        handle.loadFromJson = function(canvas, json) {
-          handle._reader.unmarshal(canvas, json);
+        handle.loadCanvasFromJson = function(canvas, json) {
+          var json_canvas = json.canvas !== undefined ? json.canvas : json;
+          handle._reader.unmarshal(canvas, json_canvas);
           var figures = canvas.getFigures().data;
           $.each(figures, function(i, figure) {
             var new_data =

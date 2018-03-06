@@ -11,7 +11,7 @@ angular
           constructor(id, data) {
             this.id = id;
             data = data || {}
-            console.log("CREATING BASE CLASS WITHDATA", data);
+            this._graph_node_ = false;
             this.bgcolor = data.bgcolor || "#ffaa33";
             this.bordercolor = data.bordercolor || "#000000";
           }

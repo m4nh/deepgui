@@ -22,6 +22,7 @@ angular
             this.size = 128;
             this.kernel_size = data.kernel_size || "1x1";
             this.stride = data.stride || 1;
+            this._graph_node_ = true;
           }
 
           /*

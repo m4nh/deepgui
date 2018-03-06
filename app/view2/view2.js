@@ -116,7 +116,7 @@ angular
             PersistenceService.saveToFile(v, "proppo.json");
             canvas.clear();
             setTimeout(function() {
-              PersistenceService.loadFromJson(canvas, v);
+              PersistenceService.loadCanvasFromJson(canvas, v);
             }, 1000);
           })
 
@@ -176,7 +176,7 @@ angular
             reader.onload = function(evt) {
               var json = JSON.parse(evt.target.result);
               canvas.clear();
-              PersistenceService.loadFromJson(canvas, json);
+              PersistenceService.loadCanvasFromJson(canvas, json);
               console.log("LOADED!", json);
             };
           })
